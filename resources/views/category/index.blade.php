@@ -10,20 +10,35 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
-                    <table class="table-auto">
+                    <table class="w-full mb-5 table table-auto">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Categories</th>
+                                <th class="w-52">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($categories as $category)
-                                <tr>
-                                    <td>{{$category['name']}}</td>
+                                <tr class="hover:bg-gray-200 transition-colors">
+                                    <td class="border p-2">{{$category->name}}</td>
+                                    <td class="border p-2">
+                                        <x-button-link href="{{ route('category.update', $category->id) }}">
+                                            Update
+                                        </x-button-link>
+                                        <x-button-link href="{{ route('category.destroy', $category->id) }}">
+                                            Delete
+                                        </x-button-link>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+
+                    <div class="flex justify-end">
+                        <x-button-link href="{{ route('category.create') }}">
+                            Create
+                        </x-button-link>
+                    </div>
 
                 </div>
             </div>
