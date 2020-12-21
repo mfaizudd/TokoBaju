@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
+    const ROUTE_INDEX = "category.index";
+    const GET_CATEGORY_BY_ID = 'select * from categories where id = ?';
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = DB::select('select * from categories');
-        return view("category.index", ['categories' => $categories]);
+        return view($this->ROUTE_INDEX, ['categories' => $categories]);
     }
 
     /**
@@ -44,7 +47,7 @@ class CategoryController extends Controller
         {
             return view("category.create");
         }
-        return redirect("category");
+        return redirect(route($this->ROUTE_INDEX));
     }
 
     /**
@@ -55,7 +58,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = DB::select($this->GET_CATEGORY_BY_ID, [ $id ]);
     }
 
     /**
@@ -66,7 +69,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = DB::select($this->GET_CATEGORY_BY_ID, [ $id ]);
+        return view("category.edit", ['category' => $category[0]]);
     }
 
     /**
@@ -78,7 +82,16 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string'
+        ]);
+        $category = DB::select($this->GET_CATEGORY_BY_ID, [$id]);
+        $success = DB::update('update categories set name = ? where id = ?', [$request->name, $id]);
+        if (!$success)
+        {
+            return view("category.edit", ['category'=>$category]);
+        }
+        return redirect(route($this->ROUTE_INDEX));
     }
 
     /**
@@ -89,6 +102,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::delete('delete categories where id = ?', [$id]);
+        return redirect(route($this->ROUTE_INDEX));
     }
 }

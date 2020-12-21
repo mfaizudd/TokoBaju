@@ -14,18 +14,18 @@
                         <thead>
                             <tr>
                                 <th>Categories</th>
-                                <th class="w-52">Actions</th>
+                                <th class="w-44">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($categories as $category)
                                 <tr class="hover:bg-gray-200 transition-colors">
-                                    <td class="border p-2">{{$category->name}}</td>
-                                    <td class="border p-2">
-                                        <x-button-link href="{{ route('category.update', $category->id) }}">
-                                            Update
+                                    <td class="border-b-2 p-2">{{$category->name}}</td>
+                                    <td class="p-2">
+                                        <x-button-link href="{{ route('category.edit', $category->id) }}">
+                                            Edit
                                         </x-button-link>
-                                        <x-button-link href="{{ route('category.destroy', $category->id) }}">
+                                        <x-button-link class="bg-red-800 hover:bg-red-500" href="{{ route('category.destroy', $category->id) }}">
                                             Delete
                                         </x-button-link>
                                     </td>
