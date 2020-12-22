@@ -20,14 +20,20 @@
                         <tbody>
                             @foreach ($categories as $category)
                                 <tr class="hover:bg-gray-200 transition-colors">
-                                    <td class="border-b-2 p-2">{{$category->name}}</td>
-                                    <td class="p-2">
+                                    <td class="border-b-2 p-2">
+                                        <a href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a>
+                                    </td>
+                                    <td class="p-2 flex">
                                         <x-button-link href="{{ route('category.edit', $category->id) }}">
                                             Edit
                                         </x-button-link>
-                                        <x-button-link class="bg-red-800 hover:bg-red-500" href="{{ route('category.destroy', $category->id) }}">
-                                            Delete
-                                        </x-button-link>
+                                        <form class="mx-2" action="{{ route('category.destroy', $category->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-button class="bg-red-800 hover:bg-red-500">
+                                                Delete
+                                            </x-button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
