@@ -25,7 +25,7 @@
                     </div>
 
                     <div class="flex items-center justify-end mt-4">
-                        <x-button-link href="{{ route('product.edit', $product->id) }}" class="ml-3">
+                        <x-button-link href="{{ route('admin.product.edit', $product->id) }}" class="ml-3">
                             {{ __('Edit') }}
                         </x-button-link>
                     </div>

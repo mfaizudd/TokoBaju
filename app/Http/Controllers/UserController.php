@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    const ROUTE_INDEX = 'user.index';
+    const ROUTE_INDEX = 'admin.user.index';
 
     /**
      * Display a listing of the resource.
@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
+        return view('admin.user.create');
     }
 
     /**
@@ -66,7 +66,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = DB::select('select * from users where id = ?', [$id])[0];
-        return view('user.show', ['user'=>$user]);
+        return view('admin.user.show', ['user'=>$user]);
     }
 
     /**
@@ -78,7 +78,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = DB::select('select * from users where id = ?', [$id])[0];
-        return view('user.edit', ['user' => $user]);
+        return view('admin.user.edit', ['user' => $user]);
     }
 
     /**

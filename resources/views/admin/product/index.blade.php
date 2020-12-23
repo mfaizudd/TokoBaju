@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Category') }}
+            {{ __('Product') }}
         </h2>
     </x-slot>
 
@@ -13,21 +13,23 @@
                     <table class="w-full mb-5 table table-auto">
                         <thead>
                             <tr>
-                                <th>Categories</th>
+                                <th>Name</th>
+                                <th>Brand</th>
                                 <th class="w-44">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($categories as $category)
+                            @foreach ($products as $product)
                                 <tr class="hover:bg-gray-200 transition-colors">
                                     <td class="border-b-2 p-2">
-                                        <a href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a>
+                                        <a href="{{ route('admin.product.show', $product->id) }}">{{ $product->name }}</a>
                                     </td>
+                                    <td class="border-b-2 p-2">{{ $product->brand }}</td>
                                     <td class="p-2 flex">
-                                        <x-button-link href="{{ route('category.edit', $category->id) }}">
+                                        <x-button-link href="{{ route('admin.product.edit', $product->id) }}">
                                             Edit
                                         </x-button-link>
-                                        <form class="mx-2" action="{{ route('category.destroy', $category->id) }}" method="post">
+                                        <form class="mx-2" action="{{ route('admin.product.destroy', $product->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <x-button class="bg-red-800 hover:bg-red-500">
@@ -41,7 +43,7 @@
                     </table>
 
                     <div class="flex justify-end">
-                        <x-button-link href="{{ route('category.create') }}">
+                        <x-button-link href="{{ route('admin.product.create') }}">
                             Create
                         </x-button-link>
                     </div>

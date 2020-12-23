@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create Product') }}
+            {{ __('Editing category \''.$category->name.'\'') }}
         </h2>
     </x-slot>
 
@@ -13,27 +13,23 @@
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                    <form method="POST" action="{{ route('product.store') }}">
+                    <form method="POST" action="{{ route('admin.category.update', $category->id) }}">
                         @csrf
+                        @method('PUT')
 
                         <!-- Name -->
                         <div>
                             <x-label for="name" :value="__('Name')" />
 
-                            <x-input id="name" class="block mt-1 w-full" type="name" name="name" :value="old('name')" required autofocus />
+                            <x-input id="name" class="block mt-1 w-full" type="name" name="name" :value="old('name') ? old('name') : $category->name" required autofocus />
                         </div>
 
-                        <!-- Brand -->
-                        <div>
-                            <x-label for="brand" :value="__('Brand')" />
-
-                            <x-input id="brand" class="block mt-1 w-full" type="brand" name="brand" :value="old('brand')" required autofocus />
-                        </div>
-
-                        <div class="flex items-center justify-end mt-4">
-                            <x-button class="ml-3">
-                                {{ __('Create') }}
-                            </x-button>
+                        <div class="flex justify-end">
+                            <div class="flex items-center justify-end mt-4">
+                                <x-button class="ml-3">
+                                    {{ __('Save') }}
+                                </x-button>
+                            </div>
                         </div>
                     </form>
 

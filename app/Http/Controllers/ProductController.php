@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = DB::select('select * from products');
-        return view('product.index', ['products' => $products]);
+        return view('admin.product.index', ['products' => $products]);
     }
 
     /**
@@ -25,7 +25,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('product.create');
+        return view('admin.product.create');
     }
 
     /**
@@ -41,7 +41,7 @@ class ProductController extends Controller
             'brand' => 'required|string'
         ]);
         DB::insert('insert into products(name, brand) values(?, ?)', [$request->input('name'), $request->input('brand')]);
-        return redirect(route('product.index'));
+        return redirect(route('admin.product.index'));
     }
 
     /**
@@ -53,7 +53,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = DB::select('select * from products where id = ?', [$id])[0];
-        return view('product.show', ['product'=>$product]);
+        return view('admin.product.show', ['product'=>$product]);
     }
 
     /**
@@ -65,7 +65,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = DB::select('select * from products where id = ?', [$id])[0];
-        return view('product.edit', ['product'=>$product]);
+        return view('admin.product.edit', ['product'=>$product]);
     }
 
     /**
@@ -82,7 +82,7 @@ class ProductController extends Controller
             'brand' => 'required|string'
         ]);
         DB::update('update products set name = ?, brand = ?', [$request->input('name'), $request->input('brand')]);
-        return redirect(route('product.index'));
+        return redirect(route('admin.product.index'));
     }
 
     /**
@@ -94,6 +94,6 @@ class ProductController extends Controller
     public function destroy($id)
     {
         DB::delete('delete from products where id = ?', [$id]);
-        return redirect(route('product.index'));
+        return redirect(route('admin.product.index'));
     }
 }

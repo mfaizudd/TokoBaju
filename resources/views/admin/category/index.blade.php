@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Users') }}
+            {{ __('Category') }}
         </h2>
     </x-slot>
 
@@ -13,33 +13,21 @@
                     <table class="w-full mb-5 table table-auto">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Role</th>
+                                <th>Categories</th>
                                 <th class="w-44">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
+                            @foreach ($categories as $category)
                                 <tr class="hover:bg-gray-200 transition-colors">
                                     <td class="border-b-2 p-2">
-                                        <a href="{{ route('user.show', $user->id) }}">{{ $user->name }}</a>
-                                    </td>
-                                    <td class="border-b-2 p-2">
-                                        {{ $user->email }}
-                                    </td>
-                                    <td class="border-b-2 p-2">
-                                        {{ $user->phone }}
-                                    </td>
-                                    <td class="border-b-2 p-2">
-                                        {{ $user->role }}
+                                        <a href="{{ route('admin.category.show', $category->id) }}">{{ $category->name }}</a>
                                     </td>
                                     <td class="p-2 flex">
-                                        <x-button-link href="{{ route('user.edit', $user->id) }}">
+                                        <x-button-link href="{{ route('admin.category.edit', $category->id) }}">
                                             Edit
                                         </x-button-link>
-                                        <form class="mx-2" action="{{ route('user.destroy', $user->id) }}" method="post">
+                                        <form class="mx-2" action="{{ route('admin.category.destroy', $category->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <x-button class="bg-red-800 hover:bg-red-500">
@@ -53,7 +41,7 @@
                     </table>
 
                     <div class="flex justify-end">
-                        <x-button-link href="{{ route('user.create') }}">
+                        <x-button-link href="{{ route('admin.category.create') }}">
                             Create
                         </x-button-link>
                     </div>

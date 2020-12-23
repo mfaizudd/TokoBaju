@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    const ROUTE_INDEX = "category.index";
+    const ROUTE_INDEX = "admin.category.index";
     const GET_CATEGORY_BY_ID = 'select * from categories where id = ?';
 
     /**
@@ -28,7 +28,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view("category.create");
+        return view("admin.category.create");
     }
 
     /**
@@ -45,7 +45,7 @@ class CategoryController extends Controller
         $success = DB::insert('insert into categories(name) values(?)', [$request->name]);
         if (!$success)
         {
-            return view("category.create");
+            return view("admin.category.create");
         }
         return redirect(route(CategoryController::ROUTE_INDEX));
     }
@@ -59,7 +59,7 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = DB::select(CategoryController::GET_CATEGORY_BY_ID, [ $id ]);
-        return view("category.show", ['category' => $category[0]]);
+        return view("admin.category.show", ['category' => $category[0]]);
     }
 
     /**
@@ -71,7 +71,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = DB::select(CategoryController::GET_CATEGORY_BY_ID, [ $id ]);
-        return view("category.edit", ['category' => $category[0]]);
+        return view("admin.category.edit", ['category' => $category[0]]);
     }
 
     /**
@@ -90,7 +90,7 @@ class CategoryController extends Controller
         $success = DB::update('update categories set name = ? where id = ?', [$request->name, $id]);
         if (!$success)
         {
-            return view("category.edit", ['category'=>$category[0]]);
+            return view("admin.category.edit", ['category'=>$category[0]]);
         }
         return redirect(route(CategoryController::ROUTE_INDEX));
     }

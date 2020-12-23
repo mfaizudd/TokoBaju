@@ -22,10 +22,19 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware('auth')->name('dashboard');
 
-Route::resource('category', CategoryController::class);
-Route::resource('user', UserController::class);
-Route::resource('product', ProductController::class);
+Route::prefix('admin')->middleware('auth.admin')->group(function() {
+
+    Route::name('admin.')->group(function() {
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
+
+        Route::resource('category', CategoryController::class);
+        Route::resource('user', UserController::class);
+        Route::resource('product', ProductController::class);
+    });
+});
 
 require __DIR__.'/auth.php';

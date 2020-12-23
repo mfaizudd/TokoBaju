@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Product') }}
+            {{ __('Users') }}
         </h2>
     </x-slot>
 
@@ -14,22 +14,32 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Brand</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Role</th>
                                 <th class="w-44">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($products as $product)
+                            @foreach ($users as $user)
                                 <tr class="hover:bg-gray-200 transition-colors">
                                     <td class="border-b-2 p-2">
-                                        <a href="{{ route('product.show', $product->id) }}">{{ $product->name }}</a>
+                                        <a href="{{ route('admin.user.show', $user->id) }}">{{ $user->name }}</a>
                                     </td>
-                                    <td class="border-b-2 p-2">{{ $product->brand }}</td>
+                                    <td class="border-b-2 p-2">
+                                        {{ $user->email }}
+                                    </td>
+                                    <td class="border-b-2 p-2">
+                                        {{ $user->phone }}
+                                    </td>
+                                    <td class="border-b-2 p-2">
+                                        {{ $user->role }}
+                                    </td>
                                     <td class="p-2 flex">
-                                        <x-button-link href="{{ route('product.edit', $product->id) }}">
+                                        <x-button-link href="{{ route('admin.user.edit', $user->id) }}">
                                             Edit
                                         </x-button-link>
-                                        <form class="mx-2" action="{{ route('product.destroy', $product->id) }}" method="post">
+                                        <form class="mx-2" action="{{ route('admin.user.destroy', $user->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <x-button class="bg-red-800 hover:bg-red-500">
@@ -43,7 +53,7 @@
                     </table>
 
                     <div class="flex justify-end">
-                        <x-button-link href="{{ route('product.create') }}">
+                        <x-button-link href="{{ route('admin.user.create') }}">
                             Create
                         </x-button-link>
                     </div>
