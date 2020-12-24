@@ -19,7 +19,7 @@ class CreateProductModelsTable extends Migration
             $table->string('size', 5);
             $table->string('color', 20);
             $table->integer('price');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
