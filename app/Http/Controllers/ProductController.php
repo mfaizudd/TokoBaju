@@ -39,13 +39,12 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'brand' => 'required|string',
-            'categories' => 'array'
+            'brand' => 'required|string'
         ]);
         DB::insert('insert into products(name, brand) values(?, ?)', [$request->input('name'), $request->input('brand')]);
         $id = DB::select('select last_insert_id() as id')[0]->id;
         $categories = [];
-        foreach ($request->input('categories') as $value) {
+        foreach ($request->input('categories', []) as $value) {
             $categories[$value] = null;
         }
         foreach ($categories as $key => $value) {
@@ -74,8 +73,10 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $categories = DB::select('select * from categories');
         $product = DB::select('select * from products where id = ?', [$id])[0];
-        return view('admin.product.edit', ['product'=>$product]);
+        $productCategories = DB::select('select * from product_categories where product_id = ?', [$id]);
+        return view('admin.product.edit', ['product'=>$product, 'productCategories' => $productCategories, 'categories' => $categories]);
     }
 
     /**
@@ -89,9 +90,22 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'brand' => 'required|string'
+            'brand' => 'required|string',
         ]);
-        DB::update('update products set name = ?, brand = ?', [$request->input('name'), $request->input('brand')]);
+        DB::update('update products set name = ?, brand = ? where id = ?', [$request->input('name'), $request->input('brand'), $id]);
+
+        // Reset categories
+        DB::delete('delete from product_categories where product_id = ?', [$id]);
+
+        // Update categories
+        $categories = [];
+        foreach ($request->input('categories', []) as $value) {
+            $categories[$value] = null;
+        }
+        foreach ($categories as $key => $value) {
+            DB::insert('insert into product_categories(product_id, category_id) values(?, ?)', [$id, $key]);
+        }
+
         return redirect(route('admin.product.index'));
     }
 

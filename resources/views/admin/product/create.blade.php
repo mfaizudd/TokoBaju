@@ -30,17 +30,18 @@
                             <x-input id="brand" class="block w-full mt-1" type="brand" name="brand" :value="old('brand')" required autofocus />
                         </div>
 
-                        <div class="mt-4">
-                            <x-label for="category" :value="__('Category')" />
-                        </div>
                         <!-- Categories -->
+                        <div class="mt-4">
+                            <x-label for="categories" :value="__('Categories')" />
+                        </div>
+
                         <div x-data="categories" x-init="init($refs)">
                             <div x-ref="categories">
-                                <div x-ref="categorySelect" class="flex flex-row mt-2">
+                                <div x-ref="categorySelectRef" class="flex flex-row hidden mt-2">
                                     <div class="w-10/12">
-                                        <x-select class="w-full" name="categories[]" :value="old('category')">
+                                        <x-select id="selection" class="w-full">
                                             @foreach($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         </x-select>
                                     </div>
@@ -71,8 +72,12 @@
     <script>
         var categories = {
             count: 1,
+            ref: null,
             categorySelects : [],
             init(refs) {
+                this.ref = refs;
+                if (!refs.categorySelect) return;
+
                 let categorySelect = refs.categorySelect;
                 this.categorySelects.push(categorySelect);
                 var removeButton = categorySelect.querySelector("#remove-button");
@@ -91,7 +96,9 @@
                     return categories.count.toString();
                 })();
                 this.count++;
-                let newCategory = refs.categorySelect.cloneNode(true);
+                let newCategory = refs.categorySelectRef.cloneNode(true);
+                newCategory.classList.remove("hidden");
+                newCategory.querySelector("#selection").setAttribute("name", "categories[]");
                 this.categorySelects.push(newCategory);
                 var removeButton = newCategory.querySelector("#remove-button");
                 removeButton.addEventListener("click", () => this.remove(newCategory));
