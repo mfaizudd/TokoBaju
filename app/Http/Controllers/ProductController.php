@@ -25,7 +25,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.product.create');
+        $categories = DB::select('select * from categories');
+        return view('admin.product.create', ['categories' => $categories]);
     }
 
     /**
@@ -38,7 +39,8 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'brand' => 'required|string'
+            'brand' => 'required|string',
+            'categories'
         ]);
         DB::insert('insert into products(name, brand) values(?, ?)', [$request->input('name'), $request->input('brand')]);
         return redirect(route('admin.product.index'));
