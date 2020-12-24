@@ -40,9 +40,17 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string',
             'brand' => 'required|string',
-            'categories'
+            'categories' => 'array'
         ]);
         DB::insert('insert into products(name, brand) values(?, ?)', [$request->input('name'), $request->input('brand')]);
+        $id = DB::select('select last_insert_id() as id')[0]->id;
+        $categories = [];
+        foreach ($request->input('categories') as $value) {
+            $categories[$value] = null;
+        }
+        foreach ($categories as $key => $value) {
+            DB::insert('insert into product_categories(product_id, category_id) values(?, ?)', [$id, $key]);
+        }
         return redirect(route('admin.product.index'));
     }
 

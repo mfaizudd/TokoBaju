@@ -33,12 +33,12 @@
                         <div class="mt-4">
                             <x-label for="category" :value="__('Category')" />
                         </div>
-                        <!-- Category -->
+                        <!-- Categories -->
                         <div x-data="categories" x-init="init($refs)">
                             <div x-ref="categories">
                                 <div x-ref="categorySelect" class="flex flex-row mt-2">
                                     <div class="w-10/12">
-                                        <x-select class="w-full" name="category[]" :value="old('category')">
+                                        <x-select class="w-full" name="categories[]" :value="old('category')">
                                             @foreach($categories as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
