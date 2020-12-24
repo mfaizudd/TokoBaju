@@ -18,7 +18,7 @@ class CreateCustomerAddressesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('address', 300);
             $table->string('phone', 20);
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

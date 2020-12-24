@@ -21,7 +21,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('discount');
             $table->string('address', 300);
             $table->integer('shipping_cost');
-            $table->foreign('customer_id')->references('id')->on('users');
+            $table->foreign('customer_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
