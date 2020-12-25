@@ -85,7 +85,6 @@
             },
             remove(category) {
                 if (this.count-1 <= 0) return;
-                console.log(category);
                 let index = this.categorySelects.indexOf(category);
                 delete this.categorySelects[index];
                 category.remove();

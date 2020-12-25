@@ -47,13 +47,27 @@ class UserController extends Controller
             'phone' => 'required|string|numeric|min:10',
             'role' => ['required', 'string', Rule::in(['Admin', 'Customer'])],
         ]);
-        DB::insert('insert into users(name, email, password, phone, role) values(:name, :email, :password, :phone, :role)', [
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'phone' => $request->input('phone'),
-            'role' => $request->input('role')
-        ]);
+        DB::transaction(function () use ($request) {
+            DB::insert('insert into users(name, email, password, phone, role) values(:name, :email, :password, :phone, :role)', [
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'phone' => $request->input('phone'),
+                'role' => $request->input('role')
+            ]);
+            $id = DB::select('select last_insert_id() as id from users')[0]->id;
+
+            $customerAddresses = [];
+            foreach ($request->input('addresses', []) as $key => $value) {
+                $phones = $request->input('phones', []);
+                $customerAddresses[]['address'] = $value;
+                $customerAddresses[$key]['phone'] = $phones[$key];
+            }
+
+            foreach ($customerAddresses as $value) {
+                DB::insert('insert into customer_addresses(user_id, address, phone) values(?, ?, ?)', [$id, $value['address'], $value['phone']]);
+            }
+        });
         return redirect(route(UserController::ROUTE_INDEX));
     }
 
@@ -78,7 +92,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = DB::select('select * from users where id = ?', [$id])[0];
-        return view('admin.user.edit', ['user' => $user]);
+        $customerAddresses = DB::select('select * from customer_addresses where user_id = ?', [$id]);
+        return view('admin.user.edit', ['user' => $user, 'customerAddresses' => $customerAddresses]);
     }
 
     /**
@@ -96,13 +111,28 @@ class UserController extends Controller
             'phone' => 'required|string|numeric|min:10',
             'role' => ['required', 'string', Rule::in(['Admin', 'Customer'])],
         ]);
-        DB::update('update users set name = :name, email = :email, phone = :phone, role = :role where id = :id', [
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
-            'role' => $request->input('role'),
-            'id' => $id
-        ]);
+        DB::transaction(function () use ($request, $id) {
+            DB::update('update users set name = :name, email = :email, phone = :phone, role = :role where id = :id', [
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'phone' => $request->input('phone'),
+                'role' => $request->input('role'),
+                'id' => $id
+            ]);
+
+            DB::delete('delete from customer_addresses where user_id = ?', [$id]);
+
+            $customerAddresses = [];
+            foreach ($request->input('addresses', []) as $key => $value) {
+                $phones = $request->input('phones', []);
+                $customerAddresses[$key]['address'] = $value;
+                $customerAddresses[$key]['phone'] = $phones[$key];
+            }
+
+            foreach ($customerAddresses as $value) {
+                DB::insert('insert into customer_addresses(user_id, address, phone) values(?, ?, ?)', [$id, $value['address'], $value['phone']]);
+            }
+        });
         return redirect(route(UserController::ROUTE_INDEX));
     }
 
