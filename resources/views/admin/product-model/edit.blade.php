@@ -17,65 +17,39 @@
                         @csrf
                         @method('PUT')
 
-                        <!-- Name -->
-                        <div>
-                            <x-label for="name" :value="__('Name')" />
-
-                            <x-input id="name" class="block w-full mt-1" type="name" name="name" :value="old('name') ? old('name') : $product->name" required autofocus />
-                        </div>
-
-                        <!-- Brand -->
-                        <div>
-                            <x-label for="brand" :value="__('Brand')" />
-
-                            <x-input id="brand" class="block w-full mt-1" type="brand" name="brand" :value="old('brand') ? old('brand') : $product->brand" required autofocus />
-                        </div>
-
-                        <!-- Categories -->
+                        <!-- Product -->
                         <div class="mt-4">
-                            <x-label for="categories" :value="__('Categories')" />
+                            <x-label for="product" :value="__('Product')" />
+                            <x-select id="selection" class="w-full">
+                                @foreach($products as $value)
+                                    @if ($value->id == $product->id)
+                                        <option value="{{ $value->id }}" selected>{{ $value->name }}</option>
+                                    @else
+                                        <option value="{{ $value->id }}" selected>{{ $value->name }}</option>
+                                    @endif
+                                @endforeach
+                            </x-select>
                         </div>
 
-                        <div x-data="categories" x-init="init($refs)">
-                            <div x-ref="categories">
-                                <div x-ref="categorySelectRef" class="flex flex-row hidden mt-2">
-                                    <div class="w-10/12">
-                                        <x-select id="selection" class="w-full">
-                                            @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @endforeach
-                                        </x-select>
-                                    </div>
+                        <!-- Size -->
+                        <div>
+                            <x-label for="size" :value="__('Size')" />
 
-                                    <div id="category-remove" class="flex justify-end w-2/12 my-auto">
-                                        <x-button-link href="#!" id="remove-button">Remove</x-button-link>
-                                    </div>
-                                </div>
+                            <x-input id="size" class="block w-full mt-1" type="size" name="size" :value="old('size') ? old ('size') : $product->size" required autofocus />
+                        </div>
 
-                                @foreach($productCategories as $key => $value)
-                                <div id="category-select" x-ref="categorySelect" class="flex flex-row mt-2">
-                                    <div class="w-10/12">
-                                        <x-select class="w-full" name="categories[]">
-                                            @foreach($categories as $category)
-                                                @if ($value->category_id == $category->id)
-                                                    <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
-                                                @else
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endif
-                                            @endforeach
-                                        </x-select>
-                                    </div>
+                        <!-- Color -->
+                        <div>
+                            <x-label for="color" :value="__('Color')" />
 
-                                    <div id="category-remove" class="flex justify-end w-2/12 my-auto">
-                                        <x-button-link href="#!" id="remove-button">Remove</x-button-link>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
+                            <x-input id="color" class="block w-full mt-1" type="color" name="color" :value="old('color') ? old ('color') : $product->color" required autofocus />
+                        </div>
 
-                            <div class="flex justify-end mt-4">
-                                <x-button-link href="#!" x-on:click="add($refs)" id="category-add">Add</x-button-link>
-                            </div>
+                        <!-- Price -->
+                        <div>
+                            <x-label for="price" :value="__('Price')" />
+
+                            <x-input id="price" class="block w-full mt-1" type="price" name="price" :value="old('price') ? old ('price') : $product->price" required autofocus />
                         </div>
 
                         <div class="flex justify-end">
