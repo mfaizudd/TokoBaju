@@ -20,17 +20,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($productmodels as $productmodel)
+                            @foreach ($models as $model)
                                 <tr class="transition-colors hover:bg-gray-200">
                                     <td class="p-2 border-b-2">
-                                        <a href="{{ route('admin.productmodel.show', $productmodel->id) }}">{{ $productmodel->name }}</a>
+                                        <a href="{{ route('admin.product.model.create', $model->id) }}">{{ $model->name }}</a>
                                     </td>
-                                    <td class="p-2 border-b-2">{{ $productmodel->brand }}</td>
+                                    <td class="p-2 border-b-2">{{ $model->brand }}</td>
                                     <td class="flex p-2">
-                                        <x-button-link href="{{ route('admin.productmodel.edit', $productmodel->id) }}">
+                                        <x-button-link href="{{ route('admin.product.model.edit', $model->id) }}">
                                             Edit
                                         </x-button-link>
-                                        <form class="mx-2" action="{{ route('admin.productmodel.destroy', $productmodel->id) }}" method="post">
+                                        <form class="mx-2" action="{{ route('admin.product.model.destroy', $model->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <x-button class="bg-red-800 hover:bg-red-500">
@@ -44,7 +44,7 @@
                     </table>
 
                     <div class="flex justify-end">
-                        <x-button-link href="{{ route('admin.productmodel.create') }}">
+                        <x-button-link href="{{ route('admin.product-model.create') }}">
                             Create
                         </x-button-link>
                     </div>

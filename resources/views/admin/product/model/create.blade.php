@@ -13,13 +13,13 @@
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                    <form method="POST" action="{{ route('admin.product.store') }}">
+                    <form method="POST" action="{{ route('admin.product.model.create') }}">
                         @csrf
 
                         <!-- Product -->
                         <div class="mt-4">
                             <x-label for="product" :value="__('Product')" />
-                            <x-select id="selection" class="w-full">
+                            <x-select name="product" id="selection" class="w-full">
                                 @foreach($products as $product)
                                 <option value="{{ $product->id }}">{{ $product->name }}</option>
                                 @endforeach
@@ -30,21 +30,21 @@
                         <div>
                             <x-label for="size" :value="__('Size')" />
 
-                            <x-input id="size" class="block w-full mt-1" type="size" name="size" :value="old('size')" required autofocus />
+                            <x-input id="size" class="block w-full mt-1" type="number" name="size" :value="old('size')" required autofocus />
                         </div>
 
                         <!-- Color -->
                         <div>
                             <x-label for="color" :value="__('Color')" />
 
-                            <x-input id="color" class="block w-full mt-1" type="color" name="color" :value="old('color')" required autofocus />
+                            <x-input id="color" class="block w-full mt-1" type="text" name="color" :value="old('color')" required autofocus />
                         </div>
 
                         <!-- Price -->
                         <div>
                             <x-label for="price" :value="__('Price')" />
 
-                            <x-input id="price" class="block w-full mt-1" type="price" name="price" :value="old('price')" required autofocus />
+                            <x-input id="price" class="block w-full mt-1" type="number" name="price" :value="old('price')" required autofocus />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
