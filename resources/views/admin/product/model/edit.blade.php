@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Editing product \''.$product->name.'\'') }}
+            Editing <a href="{{ route('admin.product.model.index', $product->id) }}">{{ $product->name }}</a>'s model
         </h2>
     </x-slot>
 
@@ -13,29 +13,15 @@
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                    <form method="POST" action="{{ route('admin.product.model.update', $model->id) }}">
+                    <form method="POST" action="{{ route('admin.product.model.update', [$product->id, $model->id]) }}">
                         @csrf
                         @method('PUT')
-
-                        <!-- Product -->
-                        <div class="mt-4">
-                            <x-label for="product" :value="__('Product')" />
-                            <x-select name="product" id="selection" class="w-full">
-                                @foreach($products as $procut)
-                                    @if ($procut->id == $model->product_id)
-                                        <option value="{{ $procut->id }}" selected>{{ $procut->name }}</option>
-                                    @else
-                                        <option value="{{ $procut->id }}">{{ $procut->name }}</option>
-                                    @endif
-                                @endforeach
-                            </x-select>
-                        </div>
 
                         <!-- Size -->
                         <div>
                             <x-label for="size" :value="__('Size')" />
 
-                            <x-input id="size" class="block w-full mt-1" type="number" name="size" :value="old('size') ? old ('size') : $model->size" required autofocus />
+                            <x-input id="size" class="block w-full mt-1" type="text" name="size" :value="old('size') ? old ('size') : $model->size" required autofocus />
                         </div>
 
                         <!-- Color -->

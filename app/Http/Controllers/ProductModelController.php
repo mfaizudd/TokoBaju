@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductModelController extends Controller
 {
@@ -11,9 +12,15 @@ class ProductModelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($productid)
     {
-        //
+        $product = DB::select('select * from products where id = ?', [$productid])[0];
+        $models = DB::select('
+            select m.*, p.name
+            from product_models m
+            join products p on m.product_id = p.id
+            where p.id = ?', [$productid]);
+        return view('admin.product.model.index', ['models' => $models, 'product' => $product]);
     }
 
     /**
@@ -21,9 +28,10 @@ class ProductModelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($productid)
     {
-        //
+        $product = DB::selectOne('select * from products where id = ?', [$productid]);
+        return view('admin.product.model.create', ['product' => $product]);
     }
 
     /**
@@ -32,9 +40,22 @@ class ProductModelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $productid)
     {
-        //
+        $request->validate([
+            'size' => 'required|string',
+            'color' => 'required|string',
+            'price' => 'required|numeric'
+        ]);
+
+        DB::insert('insert into product_models(product_id, size, color, price) values(:product_id, :size, :color, :price)', [
+            'product_id' => $productid,
+            'size' => $request->input('size'),
+            'color' => $request->input('color'),
+            'price' => $request->input('price')
+        ]);
+
+        return redirect(route('admin.product.model.index', $productid));
     }
 
     /**
@@ -43,9 +64,11 @@ class ProductModelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($productid, $id)
     {
-        //
+        $product = DB::selectOne('select * from products where id = ?', [$productid]);
+        $model = DB::selectOne('select * from product_models where id = ?', [$id]);
+        return view('admin.product.model.show', ['product' => $product, 'model' => $model]);
     }
 
     /**
@@ -54,9 +77,11 @@ class ProductModelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($productid, $id)
     {
-        //
+        $product = DB::selectOne('select * from products where id = ?', [$productid]);
+        $model = DB::selectOne('select * from product_models where id = ?', [$id]);
+        return view('admin.product.model.edit', ['product' => $product, 'model' => $model]);
     }
 
     /**
@@ -66,9 +91,22 @@ class ProductModelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $productid, $id)
     {
-        //
+        $request->validate([
+            'size' => 'required|string',
+            'color' => 'required|string',
+            'price' => 'required|numeric'
+        ]);
+
+        DB::update('update product_models set size = :size, color = :color, price = :price where id = :id', [
+            'size' => $request->input('size'),
+            'color' => $request->input('color'),
+            'price' => $request->input('price'),
+            'id' => $id
+        ]);
+
+        return redirect(route('admin.product.model.index', $productid));
     }
 
     /**
@@ -77,8 +115,9 @@ class ProductModelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($productid, $id)
     {
-        //
+        DB::delete('delete from product_models where id = ?', [$id]);
+        return redirect(route('admin.product.model.index', $productid));
     }
 }

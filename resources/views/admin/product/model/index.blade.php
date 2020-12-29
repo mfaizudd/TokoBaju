@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('ProductModel') }}
+            {{ __('Models of '.$product->name) }}
         </h2>
     </x-slot>
 
@@ -23,14 +23,15 @@
                             @foreach ($models as $model)
                                 <tr class="transition-colors hover:bg-gray-200">
                                     <td class="p-2 border-b-2">
-                                        <a href="{{ route('admin.product.model.create', $model->id) }}">{{ $model->name }}</a>
+                                        <a href="{{ route('admin.product.model.show', [$product->id, $model->id]) }}">{{ $model->size }}</a>
                                     </td>
-                                    <td class="p-2 border-b-2">{{ $model->brand }}</td>
+                                    <td class="p-2 border-b-2">{{ $model->color }}</td>
+                                    <td class="p-2 border-b-2">{{ $model->price }}</td>
                                     <td class="flex p-2">
-                                        <x-button-link href="{{ route('admin.product.model.edit', $model->id) }}">
+                                        <x-button-link href="{{ route('admin.product.model.edit', [$product->id, $model->id]) }}">
                                             Edit
                                         </x-button-link>
-                                        <form class="mx-2" action="{{ route('admin.product.model.destroy', $model->id) }}" method="post">
+                                        <form class="mx-2" action="{{ route('admin.product.model.destroy', [$product->id, $model->id]) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <x-button class="bg-red-800 hover:bg-red-500">
@@ -44,7 +45,7 @@
                     </table>
 
                     <div class="flex justify-end">
-                        <x-button-link href="{{ route('admin.product-model.create') }}">
+                        <x-button-link href="{{ route('admin.product.model.create', $product->id) }}">
                             Create
                         </x-button-link>
                     </div>

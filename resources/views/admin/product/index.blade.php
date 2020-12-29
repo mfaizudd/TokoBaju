@@ -1,16 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
             {{ __('Product') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
-                    <table class="w-full mb-5 table table-auto">
+                    <table class="table w-full mb-5 table-auto">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -20,16 +20,19 @@
                         </thead>
                         <tbody>
                             @foreach ($products as $product)
-                                <tr class="hover:bg-gray-200 transition-colors">
-                                    <td class="border-b-2 p-2">
+                                <tr class="transition-colors hover:bg-gray-200">
+                                    <td class="p-2 border-b-2">
                                         <a href="{{ route('admin.product.show', $product->id) }}">{{ $product->name }}</a>
                                     </td>
-                                    <td class="border-b-2 p-2">{{ $product->brand }}</td>
-                                    <td class="p-2 flex">
-                                        <x-button-link href="{{ route('admin.product.edit', $product->id) }}">
+                                    <td class="p-2 border-b-2">{{ $product->brand }}</td>
+                                    <td class="flex p-2">
+                                        <x-button-link class="ml-2" href="{{ route('admin.product.model.index', $product->id) }}">
+                                            Models
+                                        </x-button-link>
+                                        <x-button-link class="ml-2" href="{{ route('admin.product.edit', $product->id) }}">
                                             Edit
                                         </x-button-link>
-                                        <form class="mx-2" action="{{ route('admin.product.destroy', $product->id) }}" method="post">
+                                        <form class="ml-2" action="{{ route('admin.product.destroy', $product->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <x-button class="bg-red-800 hover:bg-red-500">

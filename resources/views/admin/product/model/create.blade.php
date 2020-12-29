@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Create Product') }}
+            Creating new <a href="{{ route('admin.product.model.index', $product->id) }}">{{ $product->name }}</a>'s model
         </h2>
     </x-slot>
 
@@ -13,24 +13,14 @@
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                    <form method="POST" action="{{ route('admin.product.model.create') }}">
+                    <form method="POST" action="{{ route('admin.product.model.store', $product->id) }}">
                         @csrf
-
-                        <!-- Product -->
-                        <div class="mt-4">
-                            <x-label for="product" :value="__('Product')" />
-                            <x-select name="product" id="selection" class="w-full">
-                                @foreach($products as $product)
-                                <option value="{{ $product->id }}">{{ $product->name }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
 
                         <!-- Size -->
                         <div>
                             <x-label for="size" :value="__('Size')" />
 
-                            <x-input id="size" class="block w-full mt-1" type="number" name="size" :value="old('size')" required autofocus />
+                            <x-input id="size" class="block w-full mt-1" type="text" name="size" :value="old('size')" required autofocus />
                         </div>
 
                         <!-- Color -->
