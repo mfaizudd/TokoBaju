@@ -13,21 +13,21 @@
                     <div class="flex space-x-2">
 
                         <a class="w-32 h-32" href="{{ route('admin.user.index') }}">
-                            <div class="p-3 text-white align-bottom bg-gray-700 rounded-lg hover:bg-gray-500">
+                            <div class="p-3 text-white align-bottom transition-colors bg-gray-700 rounded-lg hover:bg-gray-500">
                                 <h1 class="block text-7xl">{{ count($users) }}</h1>
                                 Users
                             </div>
                         </a>
 
-                        <a class="w-32 h-32" href="{{ route('admin.user.index') }}">
-                            <div class="p-3 text-white align-bottom bg-gray-700 rounded-lg hover:bg-gray-500">
+                        <a class="w-32 h-32" href="{{ route('admin.product.index') }}">
+                            <div class="p-3 text-white align-bottom transition-colors bg-gray-700 rounded-lg hover:bg-gray-500">
                                 <h1 class="block text-7xl">{{ count($products) }}</h1>
                                 Products
                             </div>
                         </a>
 
-                        <a class="w-32 h-32" href="{{ route('admin.user.index') }}">
-                            <div class="p-3 text-white align-bottom bg-gray-700 rounded-lg hover:bg-gray-500">
+                        <a class="w-32 h-32" href="{{ route('admin.category.index') }}">
+                            <div class="p-3 text-white align-bottom transition-colors bg-gray-700 rounded-lg hover:bg-gray-500">
                                 <h1 class="block text-7xl">{{ count($categories) }}</h1>
                                 Categories
                             </div>
