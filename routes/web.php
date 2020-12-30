@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductModelController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,9 +29,7 @@ Route::get('/dashboard', function () {
 Route::prefix('admin')->middleware('auth.admin')->group(function() {
 
     Route::name('admin.')->group(function() {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
         Route::resource('category', CategoryController::class);
         Route::resource('user', UserController::class);
