@@ -14,7 +14,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = DB::select('select * from products');
+        $products = DB::select('
+            select p.id, max(p.name) as name, max(p.brand) as brand, count(m.id) as models
+            from products p
+            left join product_models m on p.id = m.product_id
+            group by p.id
+        ');
+
         return view('admin.product.index', ['products' => $products]);
     }
 

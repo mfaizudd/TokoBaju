@@ -15,6 +15,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Brand</th>
+                                <th>Models</th>
                                 <th class="w-44">Actions</th>
                             </tr>
                         </thead>
@@ -25,6 +26,7 @@
                                         <a href="{{ route('admin.product.show', $product->id) }}">{{ $product->name }}</a>
                                     </td>
                                     <td class="p-2 border-b-2">{{ $product->brand }}</td>
+                                    <td class="p-2 border-b-2">{{ $product->models }}</td>
                                     <td class="flex p-2">
                                         <x-button-link class="ml-2" href="{{ route('admin.product.model.index', $product->id) }}">
                                             Models
