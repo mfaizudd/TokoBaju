@@ -31,7 +31,7 @@
                             <div>
                                 <x-label for="quantity" :value="__('Quantity')" />
 
-                                <x-input id="quantity" class="block w-full mt-1" type="number" name="quantity" :value="old('quantity') ? old('quantity') : 0" required autofocus />
+                                <x-input id="quantity" class="block w-full mt-1" type="number" name="quantity" min="0" :value="old('quantity') ? old('quantity') : 0" required autofocus />
                             </div>
 
                             <div class="flex justify-end">
