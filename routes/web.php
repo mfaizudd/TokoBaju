@@ -19,8 +19,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', [CustomerController::class, 'index'])->name('home');
-Route::get('/products/{id}', [CustomerController::class, 'showProduct'])->name('product.show');
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/products/{id}', [CustomerController::class, 'showProduct'])->name('product.show');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
