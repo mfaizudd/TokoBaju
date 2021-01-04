@@ -29,4 +29,22 @@ class CustomerController extends Controller
             'models' => $models
         ]);
     }
+
+    public function addToCart(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|numeric|exists:product_models,id',
+            'qty' => 'required|numeric|min:0'
+        ]);
+        $products = DB::select('select * from products');
+        $model = DB::selectOne('select * from product_models where id = ?', [$request->id]);
+        $product = DB::selectOne('select * from products where id = ?', [$model->product_id]);
+
+        $cartItem = [
+            'id' => $model->id,
+            'qty' => $request->qty,
+        ];
+        $request->session()->push('cart', $cartItem);
+        return view('customer.index', ['products' => $products, 'addedProduct' => $product]);
+    }
 }

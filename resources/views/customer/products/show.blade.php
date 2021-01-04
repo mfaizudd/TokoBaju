@@ -15,12 +15,18 @@
                     <div class="grid grid-cols-2">
                         <img class="w-auto rounded-lg" src="https://picsum.photos/400" alt="random">
 
-                        <form class="space-y-2" action="#" method="post">
+
+                        <form class="space-y-2" action="{{ route('cart.add', $product->id) }}" method="post">
+                            @csrf
+
+                            <!-- Validation Errors -->
+                            <x-auth-validation-errors class="mb-4" :errors="$errors" />
+
                             <!-- Model -->
                             <div>
-                                <x-label for="model" :value="__('Model')" />
+                                <x-label for="id" :value="__('Model')" />
 
-                                <x-select name="model" id="selection" class="w-full">
+                                <x-select name="id" id="model" class="w-full">
                                     @foreach($models as $model)
                                     <option value="{{ $model->id }}">{{ $model->size }} {{ $model->color }} - Rp. {{ $model->price }}</option>
                                     @endforeach
@@ -31,7 +37,7 @@
                             <div>
                                 <x-label for="quantity" :value="__('Quantity')" />
 
-                                <x-input id="quantity" class="block w-full mt-1" type="number" name="quantity" min="0" :value="old('quantity') ? old('quantity') : 0" required autofocus />
+                                <x-input id="quantity" class="block w-full mt-1" type="number" name="qty" min="0" :value="old('quantity') ? old('quantity') : 0" required autofocus />
                             </div>
 
                             <div class="flex justify-end">

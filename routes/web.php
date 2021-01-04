@@ -24,6 +24,7 @@ Route::get('/', [CustomerController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/products/{id}', [CustomerController::class, 'showProduct'])->name('product.show');
+    Route::post('/products/{id}/addToCart', [CustomerController::class, 'addToCart'])->name('cart.add');
 });
 
 Route::get('/dashboard', function () {
