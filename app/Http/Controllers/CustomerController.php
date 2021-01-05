@@ -62,7 +62,28 @@ class CustomerController extends Controller
             'id' => $model->id,
             'qty' => $request->qty,
         ];
-        $request->session()->push('cart', $cartItem);
+        $cart = $request->session()->get('cart');
+        $existingKey = $this->getCartItem($model->id, $cart);
+        if ($existingKey >= 0)
+        {
+            $cart[$existingKey] = $cartItem;
+            $request->session()->put('cart', $cart);
+        }
+        else
+        {
+            $request->session()->push('cart', $cartItem);
+        }
         return view('customer.index', ['products' => $products, 'addedProduct' => $product]);
+    }
+
+    private function getCartItem($id, $cart)
+    {
+        foreach ($cart as $key => $item) {
+            if (isset($item['id']) && $item['id'] == $id)
+            {
+                return $key;
+            }
+        }
+        return -1;
     }
 }
