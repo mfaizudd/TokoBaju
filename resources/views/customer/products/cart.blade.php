@@ -16,6 +16,7 @@
                                 <th>Name</th>
                                 <th>Brand</th>
                                 <th>Model</th>
+                                <th>Quantity</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -26,6 +27,7 @@
                                     </td>
                                     <td class="p-2 border-b-2">{{ $item->brand }}</td>
                                     <td class="p-2 border-b-2">{{ $item->model }}</td>
+                                    <td class="p-2 border-b-2">{{ $item->qty }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

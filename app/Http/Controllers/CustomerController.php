@@ -36,7 +36,7 @@ class CustomerController extends Controller
         $items = [];
         foreach ($cartItems as $value) {
             $items[] = DB::selectOne('
-                select m.id, p.name, p.brand, concat(m.size, " - ", m.color) as model, m.price, :qty
+                select m.id, p.name, p.brand, concat(m.size, " - ", m.color) as model, m.price, :qty as qty
                 from product_models m
                 join products p on m.product_id = p.id
                 where m.id = :model_id
