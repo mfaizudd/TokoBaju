@@ -52,7 +52,7 @@ class CustomerController extends Controller
     {
         $request->validate([
             'id' => 'required|numeric|exists:product_models,id',
-            'qty' => 'required|numeric|min:0'
+            'qty' => 'required|numeric|min:1'
         ]);
         $products = DB::select('select * from products');
         $model = DB::selectOne('select * from product_models where id = ?', [$request->id]);
