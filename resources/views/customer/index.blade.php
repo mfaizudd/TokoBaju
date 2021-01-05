@@ -11,12 +11,7 @@
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     {{ $addedProduct->name }} Added to cart!
-                    <p>
-                        <h2>DEBUG</h2>
-                    <pre>
-                        {{ print_r(Session::get('cart')) }}
-                    </pre>
-                    </p>
+                    <a href="{{ route('cart') }}">Go to cart</a>
                 </div>
             </div>
         </div>

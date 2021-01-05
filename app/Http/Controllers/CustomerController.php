@@ -30,6 +30,24 @@ class CustomerController extends Controller
         ]);
     }
 
+    public function cart(Request $request)
+    {
+        $cartItems = $request->session()->get('cart');
+        $items = [];
+        foreach ($cartItems as $value) {
+            $items[] = DB::selectOne('
+                select m.id, p.name, p.brand, concat(m.size, " - ", m.color) as model, m.price, :qty
+                from product_models m
+                join products p on m.product_id = p.id
+                where m.id = :model_id
+            ', [
+                'qty' => $value['qty'],
+                'model_id' => $value['id']
+            ]);
+        }
+        return view('customer.products.cart', ['items' => $items]);
+    }
+
     public function addToCart(Request $request)
     {
         $request->validate([
