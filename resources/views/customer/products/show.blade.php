@@ -28,7 +28,7 @@
 
                                 <x-select name="id" id="model" class="w-full">
                                     @foreach($models as $model)
-                                    <option value="{{ $model->id }}">{{ $model->size }} {{ $model->color }} - Rp. {{ $model->price }}</option>
+                                    <option value="{{ $model->id }}">{{ $model->size }} - {{ $model->color }} - Rp. {{ $model->price }}</option>
                                     @endforeach
                                 </x-select>
                             </div>
