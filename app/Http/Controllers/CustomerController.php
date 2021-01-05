@@ -36,7 +36,7 @@ class CustomerController extends Controller
         $items = [];
         foreach ($cartItems as $value) {
             $items[] = DB::selectOne('
-                select p.id, p.name, p.brand, concat(m.size, " - ", m.color) as model, m.price, :qty as qty
+                select p.id, p.name, p.brand, concat(m.size, " - ", m.color) as model, m.price, :qty as qty, m.id as model_id
                 from product_models m
                 join products p on m.product_id = p.id
                 where m.id = :model_id
@@ -74,6 +74,19 @@ class CustomerController extends Controller
             $request->session()->push('cart', $cartItem);
         }
         return view('customer.index', ['products' => $products, 'addedProduct' => $product]);
+    }
+
+    public function removeFromCart(Request $request, $id)
+    {
+        $cart = $request->session()->get('cart');
+
+        $existingKey = $this->getCartItem($id, $cart);
+        if ($existingKey >= 0)
+        {
+            unset($cart[$existingKey]);
+            $request->session()->put('cart', $cart);
+        }
+        return redirect(route('cart'));
     }
 
     private function getCartItem($id, $cart)
