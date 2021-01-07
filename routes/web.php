@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductModelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/products/{id}/addToCart', [CustomerController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [CustomerController::class, 'cart'])->name('cart');
     Route::get('/cart/{id}/remove', [CustomerController::class, 'removeFromCart'])->name('cart.remove');
+    Route::get('/checkout/overview', [TransactionController::class, 'overview'])->name('transactions.overview');
 });
 
 Route::get('/dashboard', function () {

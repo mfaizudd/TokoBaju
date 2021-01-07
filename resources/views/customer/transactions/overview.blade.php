@@ -29,19 +29,31 @@
                                     <td class="p-2 border-b-2">{{ $item->brand }}</td>
                                     <td class="p-2 border-b-2">{{ $item->model }}</td>
                                     <td class="p-2 border-b-2">{{ $item->qty }}</td>
-                                    <td class="flex justify-center my-1">
-                                        <x-button-link href="{{ route('cart.remove', [$item->model_id]) }}">
-                                            Remove
-                                        </x-button-link>
-                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
 
+                    <form class="space-y-1" action="" method="post">
+                        <!-- Address -->
+                        <div>
+                            <label for="address">Address</label>
+                            <x-select name="address" id="address" class="w-full">
+                                @foreach($addresses as $address)
+                                <option value="{{ $address->id }}">{{ $address->address }} ({{ $address->phone }})</option>
+                                @endforeach
+                            </x-select>
+                        </div>
+
+                        <div>
+                            <label for="shipping_cost">Shipping Cost</label>
+                            <div class="flex justify-end">Rp. 10000</div>
+                        </div>
+                    </form>
+
                     <div class="flex justify-end">
-                        <x-button-link href="{{ route('transactions.overview') }}">
-                            Checkout
+                        <x-button-link href="#!">
+                            Buy
                         </x-button-link>
                     </div>
 

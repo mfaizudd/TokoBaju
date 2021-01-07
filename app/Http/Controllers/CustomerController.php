@@ -91,6 +91,11 @@ class CustomerController extends Controller
 
     private function getCartItem($id, $cart)
     {
+        if (!is_array($cart) || count($cart)<=0)
+        {
+            return -1;
+        }
+
         foreach ($cart as $key => $item) {
             if (isset($item['id']) && $item['id'] == $id)
             {

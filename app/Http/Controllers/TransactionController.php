@@ -3,13 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
-    public function overview()
+    public function overview(Request $request)
     {
-        // TODO: add final overview for customer, showing their address, shipping cost etc
+        $cartItems = $request->session()->get('cart');
+        $items = [];
+        foreach ($cartItems as $value) {
+            $items[] = DB::selectOne('
+                select p.id, p.name, p.brand, concat(m.size, " - ", m.color) as model, m.price, :qty as qty, m.id as model_id
+                from product_models m
+                join products p on m.product_id = p.id
+                where m.id = :model_id
+            ', [
+                'qty' => $value['qty'],
+                'model_id' => $value['id']
+            ]);
+        }
+        $customerAddresses = DB::select('select * from customer_addresses where user_id = ?', [Auth::user()->id]);
+        return view('customer.transactions.overview', ['items' => $items, 'addresses' => $customerAddresses]);
     }
 
     public function buy(Request $request)
