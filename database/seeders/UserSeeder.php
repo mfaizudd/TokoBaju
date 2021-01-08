@@ -17,22 +17,28 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'name' => 'Mega Admind',
-            'phone' => '089643414876',
-            'email' => 'admind@admin.com',
-            'password' => Hash::make('password'),
-            'role' => 'Admin'
-        ]);
-        DB::table('users')->insert([
-            'name' => 'Filthy Customer',
-            'phone' => '085225751050',
-            'email' => 'customer@filthy.com',
-            'password' => Hash::make('password'),
-            'role' => 'Customer'
-        ]);
+        User::factory()
+            ->hasCustomerAddresses(3)
+            ->create([
+                'name' => 'Mega Admind',
+                'phone' => '089643414876',
+                'email' => 'admind@admin.com',
+                'password' => Hash::make('password'),
+                'role' => 'Admin'
+            ]);
+
+        User::factory()
+            ->hasCustomerAddresses(3)
+            ->create([
+                'name' => 'Filthy Customer',
+                'phone' => '085225751050',
+                'email' => 'customer@filthy.com',
+                'password' => Hash::make('password'),
+                'role' => 'Customer'
+            ]);
         User::factory()
                 ->times(50)
+                ->hasCustomerAddresses(3)
                 ->create();
     }
 }

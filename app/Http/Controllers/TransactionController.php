@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
@@ -27,11 +28,32 @@ class TransactionController extends Controller
         return view('customer.transactions.overview', ['items' => $items, 'addresses' => $customerAddresses]);
     }
 
-    public function buy(Request $request)
+    public function checkout(Request $request)
     {
-        $cart = $request->session()->get('cart', []);
-        DB::insert('insert transactions(date, discount, address, shipping_cost, customer_id) values(:date, :discount, :address, :shipping_cost, :customer_id)', [
-            'date' => $request->date
+        $validator = Validator::make(array_merge($request->session()->all(), $request->all()), [
+            'cart' => 'required|array',
+            'cart.*.id' => 'required|numeric',
+            'cart.*.qty' => 'required|numeric|min:1',
+            'address' => 'required|exists:customer_addresses,id'
         ]);
+        if ($validator->fails())
+        {
+            return redirect()->back()->withErrors($validator->errors());
+        }
+
+        DB::transaction(function () use ($request) {
+            $address = DB::selectOne('select * from customer_addresses where id = ?', [$request->address]);
+            $cart = $request->session()->get('cart', []);
+            DB::insert('insert transactions(date, discount, address, shipping_cost, customer_id) values(:date, :discount, :address, :shipping_cost, :customer_id)', [
+                'date' => now(),
+                'discount' => 0,
+                'address' => $address,
+                'shipping_cost' => 10000,
+                'customer_id' => Auth::user()->id
+            ]);
+            // foreach ($cart as $item) {
+            //     DB::insert('insert into transaction_items(transaction_id, item_id')
+            // }
+        });
     }
 }

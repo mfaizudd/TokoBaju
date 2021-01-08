@@ -10,6 +10,9 @@
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
+                    <!-- Validation Errors -->
+                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+
                     <table class="table w-full mb-5 table-auto">
                         <thead>
                             <tr>
@@ -34,7 +37,9 @@
                         </tbody>
                     </table>
 
-                    <form class="space-y-1" action="" method="post">
+                    <form class="space-y-1" action="{{ route('transactions.checkout') }}" method="post">
+                        @csrf
+
                         <!-- Address -->
                         <div>
                             <label for="address">Address</label>
@@ -49,13 +54,13 @@
                             <label for="shipping_cost">Shipping Cost</label>
                             <div class="flex justify-end">Rp. 10000</div>
                         </div>
-                    </form>
 
-                    <div class="flex justify-end">
-                        <x-button-link href="#!">
-                            Buy
-                        </x-button-link>
-                    </div>
+                        <div class="flex justify-end">
+                            <x-button type="submit">
+                                Checkout
+                            </x-button>
+                        </div>
+                    </form>
 
                 </div>
             </div>
