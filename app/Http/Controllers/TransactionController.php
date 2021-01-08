@@ -47,13 +47,20 @@ class TransactionController extends Controller
             DB::insert('insert transactions(date, discount, address, shipping_cost, customer_id) values(:date, :discount, :address, :shipping_cost, :customer_id)', [
                 'date' => now(),
                 'discount' => 0,
-                'address' => $address,
+                'address' => $address->address,
                 'shipping_cost' => 10000,
                 'customer_id' => Auth::user()->id
             ]);
-            // foreach ($cart as $item) {
-            //     DB::insert('insert into transaction_items(transaction_id, item_id')
-            // }
+            $id = DB::selectOne('select last_insert_id() as id from transactions')->id;
+            foreach ($cart as $item) {
+                DB::insert('insert into transaction_items(transaction_id, item_id, qty) values(:transaction_id, :item_id, :qty)', [
+                    'transaction_id' => $id,
+                    'item_id' => $item['id'],
+                    'qty' => $item['qty']
+                ]);
+            }
+            $request->session()->remove('cart');
         });
+        return redirect(route('home'));
     }
 }
