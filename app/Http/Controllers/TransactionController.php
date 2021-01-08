@@ -10,7 +10,7 @@ class TransactionController extends Controller
 {
     public function overview(Request $request)
     {
-        $cartItems = $request->session()->get('cart');
+        $cartItems = $request->session()->get('cart', []);
         $items = [];
         foreach ($cartItems as $value) {
             $items[] = DB::selectOne('
@@ -29,7 +29,7 @@ class TransactionController extends Controller
 
     public function buy(Request $request)
     {
-        $cart = $request->session()->get('cart');
+        $cart = $request->session()->get('cart', []);
         DB::insert('insert transactions(date, discount, address, shipping_cost, customer_id) values(:date, :discount, :address, :shipping_cost, :customer_id)', [
             'date' => $request->date
         ]);

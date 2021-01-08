@@ -32,7 +32,7 @@ class CustomerController extends Controller
 
     public function cart(Request $request)
     {
-        $cartItems = $request->session()->get('cart');
+        $cartItems = $request->session()->get('cart', []);
         $items = [];
         foreach ($cartItems as $value) {
             $items[] = DB::selectOne('
@@ -62,7 +62,7 @@ class CustomerController extends Controller
             'id' => $model->id,
             'qty' => $request->qty,
         ];
-        $cart = $request->session()->get('cart');
+        $cart = $request->session()->get('cart', []);
         $existingKey = $this->getCartItem($model->id, $cart);
         if ($existingKey >= 0)
         {
@@ -78,7 +78,7 @@ class CustomerController extends Controller
 
     public function removeFromCart(Request $request, $id)
     {
-        $cart = $request->session()->get('cart');
+        $cart = $request->session()->get('cart', []);
 
         $existingKey = $this->getCartItem($id, $cart);
         if ($existingKey >= 0)
