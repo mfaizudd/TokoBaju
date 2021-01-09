@@ -26,8 +26,9 @@ class TransactionController extends Controller
     {
         $transaction = DB::selectOne('select * from transactions where id = ?', [$id]);
         $items = DB::select('
-            select i.item_id, concat(m.size, " - ", m.color) as name, i.qty, m.price from transaction_items i
+            select i.item_id, concat(p.name, " (", m.size, " - ", m.color, ")") as name, i.qty, m.price from transaction_items i
             join product_models m on i.item_id = m.id
+            join products p on p.id = m.product_id
             where i.transaction_id = ?', [$id]);
 
         $total = DB::selectOne('
