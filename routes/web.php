@@ -28,8 +28,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/products/{id}/addToCart', [CustomerController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [CustomerController::class, 'cart'])->name('cart');
     Route::get('/cart/{id}/remove', [CustomerController::class, 'removeFromCart'])->name('cart.remove');
-    Route::get('/checkout/overview', [TransactionController::class, 'overview'])->name('transactions.overview');
-    Route::post('/checkout', [TransactionController::class, 'checkout'])->name('transactions.checkout');
+
+    // Transactions
+    Route::prefix('transactions')->name('transactions.')->group(function() {
+        Route::get('/', [TransactionController::class, 'index'])->name('index');
+        Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('show');
+        Route::get('/checkout/overview', [TransactionController::class, 'overview'])->name('overview');
+        Route::post('/checkout', [TransactionController::class, 'checkout'])->name('checkout');
+    });
 });
 
 Route::get('/dashboard', function () {

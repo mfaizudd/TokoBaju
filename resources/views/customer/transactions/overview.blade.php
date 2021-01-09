@@ -20,7 +20,6 @@
                                 <th>Brand</th>
                                 <th>Model</th>
                                 <th>Quantity</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>

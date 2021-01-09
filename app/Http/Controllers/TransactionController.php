@@ -9,6 +9,41 @@ use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
+    public function index()
+    {
+        $transactions = DB::select('
+            select t.id, t.date, t.discount, t.address, sum(i.qty * (m.price - m.price * t.discount)) as total
+            from transactions t
+            join transaction_items i on t.id = i.transaction_id
+            join product_models m on i.item_id = m.id
+            where customer_id = ?
+            group by t.id, t.date, t.discount, t.address', [Auth::user()->id]);
+
+        return view('customer.transactions.index', ['transactions' => $transactions]);
+    }
+
+    public function show($id)
+    {
+        $transaction = DB::selectOne('select * from transactions where id = ?', [$id]);
+        $items = DB::select('
+            select i.item_id, concat(m.size, " - ", m.color) as name, i.qty, m.price from transaction_items i
+            join product_models m on i.item_id = m.id
+            where i.transaction_id = ?', [$id]);
+
+        $total = DB::selectOne('
+            select sum(i.qty * (m.price - m.price * t.discount)) as total
+            from transactions t
+            join transaction_items i on t.id = i.transaction_id
+            join product_models m on i.item_id = m.id
+            where t.id = ?', [$id])->total;
+
+        return view('customer.transactions.show', [
+            'transaction' => $transaction,
+            'items' => $items,
+            'total' => $total
+        ]);
+    }
+
     public function overview(Request $request)
     {
         $cartItems = $request->session()->get('cart', []);
