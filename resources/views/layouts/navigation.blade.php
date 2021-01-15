@@ -11,13 +11,13 @@
                 </div>
 
                 <!-- Navigation Links -->
-                @if (Auth::user()->role != 'Admin')
+                @if (Auth::user() != null && Auth::user()->role != 'Admin')
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
                     </div>
-                @else
+                @elseif (Auth::user() != null)
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                             {{ __(' Admin Dashboard') }}
@@ -49,7 +49,11 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="flex items-center text-sm font-medium text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300">
+                            @if (Auth::user() != null)
                             <div>{{ Auth::user()->name }}</div>
+                            @else
+                            <div>Account</div>
+                            @endif
 
                             <div class="ml-1">
                                 <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -61,6 +65,7 @@
 
                     <x-slot name="content">
 
+                        @if (Auth::user() != null)
                         <x-dropdown-link :href="route('cart')">
                             Cart
                         </x-dropdown-link>
@@ -79,6 +84,14 @@
                                 {{ __('Logout') }}
                             </x-dropdown-link>
                         </form>
+                        @else
+                        <x-dropdown-link :href="route('login')">
+                            Login
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('register')">
+                            Register
+                        </x-dropdown-link>
+                        @endif
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -97,18 +110,20 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        @if (Auth::user()->role != 'Admin')
-            <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
-                </x-responsive-nav-link>
-            </div>
-        @else
-            <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                    {{ __('Dashboard') }}
-                </x-responsive-nav-link>
-            </div>
+        @if (Auth::user() != null)
+            @if (Auth::user()->role != 'Admin')
+                <div class="pt-2 pb-3 space-y-1">
+                    <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-responsive-nav-link>
+                </div>
+            @else
+                <div class="pt-2 pb-3 space-y-1">
+                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-responsive-nav-link>
+                </div>
+            @endif
         @endif
 
         <!-- Responsive Settings Options -->
@@ -120,23 +135,39 @@
                     </svg>
                 </div>
 
+                @if (Auth::user() != null)
                 <div class="ml-3">
                     <div class="text-base font-medium text-gray-800">{{ Auth::user()->name }}</div>
                     <div class="text-sm font-medium text-gray-500">{{ Auth::user()->email }}</div>
                 </div>
+                @endif
             </div>
 
             <div class="mt-3 space-y-1">
+                @if (Auth::user() != null)
                 <!-- Authentication -->
+                <x-responsive-nav-link :href="route('cart')">
+                    {{ __('Cart') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('transactions.index')">
+                    {{ __('History') }}
+                </x-responsive-nav-link>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Logout') }}
                     </x-responsive-nav-link>
                 </form>
+                @else
+                <x-responsive-nav-link :href="route('login')">
+                    {{ __('Login') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('register')">
+                    {{ __('Register') }}
+                </x-responsive-nav-link>
+                @endif
             </div>
         </div>
     </div>

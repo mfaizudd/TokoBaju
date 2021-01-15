@@ -10,11 +10,6 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        if (Auth::user() == null)
-        {
-            return view('welcome');
-        }
-
         $products = DB::select('select * from products limit 12');
         return view('customer.index', ['products' => $products]);
     }
