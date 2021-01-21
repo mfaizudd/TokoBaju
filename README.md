@@ -1,3 +1,3 @@
 # TokoBaju
  
-database course assignments
+database coursework
